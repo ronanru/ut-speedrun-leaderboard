@@ -2,6 +2,10 @@ import "@/styles/globals.css";
 import { Inter } from "next/font/google";
 import Link from "next/link";
 
+export const runtime = "edge";
+// Prod database is in Stockholm
+export const preferredRegion = "arn1";
+
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
