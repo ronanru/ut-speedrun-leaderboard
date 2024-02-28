@@ -19,7 +19,7 @@ export default async function HomePage() {
       <details className="w-full">
         <summary className="cursor-pointer">Speedrun rules</summary>
         <ol className="list-inside list-decimal">
-          <li>UT Project and all project is included in the run</li>
+          <li>UT Project and project init are included in the run</li>
           <li>You can use any framework</li>
           <li>Speedrun ends when you upload any file</li>
           <li>You can only copy code from the docs</li>
