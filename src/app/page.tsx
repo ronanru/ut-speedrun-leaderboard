@@ -27,6 +27,10 @@ export default async function HomePage() {
         <Link href="https://twitter.com/matveydev" className="underline">
           dm me on twitter
         </Link>
+        .{" "}
+        <strong>
+          Before submittion, please delete the UT Project or reset the API Key!
+        </strong>
       </details>
       <div className="rounded-xl border border-zinc-900">
         <table className="w-full overflow-hidden rounded-xl">
@@ -56,7 +60,7 @@ export default async function HomePage() {
                   </td>
                   <td className="p-2">
                     <Link
-                      href={run.runnerName}
+                      href={run.videoUrl}
                       target="_blank"
                       className="hover:underline"
                     >

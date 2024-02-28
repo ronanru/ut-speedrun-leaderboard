@@ -4,8 +4,9 @@ export const runs = sqliteTable(
   "run",
   {
     id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
-    runnerName: text("runnerName", { length: 256 }).notNull(),
-    runnerUrl: text("runnerUrl", { length: 256 }).notNull(),
+    runnerName: text("runner_name", { length: 256 }).notNull(),
+    runnerUrl: text("runner_url", { length: 256 }).notNull(),
+    videoUrl: text("video_url", { length: 256 }).notNull(),
     timeMillis: int("time_millis", { mode: "number" }).notNull(),
     isApproved: int("is_approved", { mode: "boolean" })
       .notNull()
