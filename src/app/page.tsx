@@ -1,6 +1,12 @@
+import { db } from "@/server/db";
+import { runs } from "@/server/db/schema";
+import { asc } from "drizzle-orm";
 import Link from "next/link";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const allRuns = await db.query.runs.findMany({
+    orderBy: asc(runs.timeMillis),
+  });
   return (
     <>
       <h1 className="text-center text-3xl font-bold text-white">
@@ -32,27 +38,37 @@ export default function HomePage() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td className="p-2">#1</td>
-              <td className="p-2">
-                <Link
-                  href="https://twitter.com/t3dotgg"
-                  target="_blank"
-                  className="hover:underline"
-                >
-                  Theo
-                </Link>
-              </td>
-              <td className="p-2">
-                <Link
-                  href="https://www.youtube.com/watch?v=rkva6WYb5mM"
-                  target="_blank"
-                  className="hover:underline"
-                >
-                  1m 42s 17ms
-                </Link>
-              </td>
-            </tr>
+            {allRuns.map((run, i) => {
+              const milliseconds = run.timeMillis % 1000;
+              const seconds = Math.floor(run.timeMillis / 1000) % 60;
+              const minutes = Math.floor(run.timeMillis / 1000 / 60);
+              return (
+                <tr key={run.id}>
+                  <td className="p-2">#{i + 1}</td>
+                  <td className="p-2">
+                    <Link
+                      href={run.runnerUrl}
+                      target="_blank"
+                      className="hover:underline"
+                    >
+                      {run.runnerName}
+                    </Link>
+                  </td>
+                  <td className="p-2">
+                    <Link
+                      href={run.runnerName}
+                      target="_blank"
+                      className="hover:underline"
+                    >
+                      {minutes}
+                      <span className="text-sm">m</span> {seconds}
+                      <span className="text-sm">s</span> {milliseconds}
+                      <span className="text-sm">ms</span>
+                    </Link>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
