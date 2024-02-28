@@ -3,6 +3,10 @@ import { runs } from "@/server/db/schema";
 import { asc } from "drizzle-orm";
 import Link from "next/link";
 
+const dateFormatter = new Intl.DateTimeFormat("en", {
+  dateStyle: "medium",
+});
+
 export default async function HomePage() {
   const allRuns = await db.query.runs.findMany({
     orderBy: asc(runs.timeMillis),
@@ -39,6 +43,7 @@ export default async function HomePage() {
               <th className="p-2"></th>
               <th className="p-2">Name</th>
               <th className="p-2">Time</th>
+              <th className="p-2">Date</th>
             </tr>
           </thead>
           <tbody>
@@ -47,7 +52,10 @@ export default async function HomePage() {
               const seconds = Math.floor(run.timeMillis / 1000) % 60;
               const minutes = Math.floor(run.timeMillis / 1000 / 60);
               return (
-                <tr key={run.id}>
+                <tr
+                  key={run.id}
+                  className="border-b border-zinc-900 last:border-none"
+                >
                   <td className="p-2">#{i + 1}</td>
                   <td className="p-2">
                     <Link
@@ -70,6 +78,7 @@ export default async function HomePage() {
                       <span className="text-sm">ms</span>
                     </Link>
                   </td>
+                  <td className="p-2">{dateFormatter.format(run.createdAt)}</td>
                 </tr>
               );
             })}
