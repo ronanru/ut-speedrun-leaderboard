@@ -12,9 +12,24 @@ export const runs = sqliteTable(
       .notNull()
       .default(false),
     createdAt: int("created_at", { mode: "timestamp" }).notNull(),
+    submittedBy: text("submitted_by").references(() => users.id),
   },
   (t) => ({
     timeIdx: index("name_idx").on(t.timeMillis),
     approvedIdx: index("approved_idx").on(t.isApproved),
   }),
 );
+
+export const users = sqliteTable("user", {
+  id: text("id").notNull().primaryKey(),
+  githubId: int("github_id").notNull().unique(),
+  username: text("username").notNull(),
+});
+
+export const sessions = sqliteTable("session", {
+  id: text("id").notNull().primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id),
+  expiresAt: int("expires_at").notNull(),
+});

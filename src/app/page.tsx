@@ -1,6 +1,4 @@
-import { db } from "@/server/db";
-import { runs } from "@/server/db/schema";
-import { asc } from "drizzle-orm";
+import { getAllRuns } from "@/server/api/runs";
 import Link from "next/link";
 
 const dateFormatter = new Intl.DateTimeFormat("en", {
@@ -8,9 +6,7 @@ const dateFormatter = new Intl.DateTimeFormat("en", {
 });
 
 export default async function HomePage() {
-  const allRuns = await db.query.runs.findMany({
-    orderBy: asc(runs.timeMillis),
-  });
+  const allRuns = await getAllRuns();
   return (
     <>
       <h1 className="text-center text-3xl font-bold text-white">
@@ -26,14 +22,15 @@ export default async function HomePage() {
         </ol>
       </details>
       <details className="w-full">
-        <summary className="cursor-pointer">How to submit a run</summary>I will
-        create a submittion form here, but for now you can{" "}
-        <Link href="https://twitter.com/matveydev" className="underline">
-          dm me on twitter
+        <summary className="cursor-pointer">How to submit a run</summary>Please
+        submit on our{" "}
+        <Link href="/submit" className="underline">
+          submit page
         </Link>
-        .{" "}
+        . <br />
         <strong>
-          Before submittion, please delete the UT Project or reset the API Key!
+          Before the submittion, please delete the UT Project or reset the API
+          Key!
         </strong>
       </details>
       <div className="rounded-xl border border-zinc-900">
@@ -78,7 +75,9 @@ export default async function HomePage() {
                       <span className="text-sm">ms</span>
                     </Link>
                   </td>
-                  <td className="p-2">{dateFormatter.format(run.createdAt)}</td>
+                  <td className="p-2">
+                    {dateFormatter.format(new Date(run.createdAt))}
+                  </td>
                 </tr>
               );
             })}
