@@ -5,6 +5,7 @@ import { zfd } from "zod-form-data";
 import { redirect } from "next/navigation";
 import { runs } from "../db/schema";
 import { env } from "@/env";
+import { validateRequest } from "../auth";
 
 export const getAllRuns = cache(
   () =>
@@ -26,6 +27,8 @@ const submitFormSchema = zfd.formData({
 });
 
 export const submitForm = async (formData: FormData) => {
+  const auth = await validateRequest();
+  if (!auth.user) throw new Error("Unauthorized");
   const { runnerName, videoUrl, runnerUrl, time } =
     submitFormSchema.parse(formData);
   const timeMillis = time.split(" ").reduce((acc, time) => {
@@ -41,6 +44,7 @@ export const submitForm = async (formData: FormData) => {
     timeMillis,
     createdAt: new Date(),
     isApproved: false,
+    submittedBy: auth.user.id,
   });
 
   if (env.TELEGRAM_BOT_TOKEN && env.TELEGRAM_CHAT_ID) {

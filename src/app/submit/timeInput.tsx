@@ -4,7 +4,7 @@ import { useMask } from "@react-input/mask";
 
 export const TimeInput = () => {
   const inputRef = useMask({
-    mask: "__m __s __ms",
+    mask: "__m __s ___ms",
     replacement: {
       _: /\d/,
     },
