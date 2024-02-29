@@ -26,13 +26,15 @@ export default async function SubmitPage() {
       <h1 className="text-center text-3xl font-bold text-white">
         Submit UT Speedrun
       </h1>
-      <Input label="Your Name" name="runnerName" autoComplete="name" />
+      <Input required label="Your Name" name="runnerName" autoComplete="name" />
       <Input
+        required
         label="Link to your run (Please upload to YouTube)"
         name="videoUrl"
         type="url"
       />
       <Input
+        required
         label="Your Site (where should users go when they click your name)"
         name="runnerUrl"
         type="url"

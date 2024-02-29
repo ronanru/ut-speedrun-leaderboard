@@ -4,6 +4,7 @@ import { db } from "../db";
 import { zfd } from "zod-form-data";
 import { redirect } from "next/navigation";
 import { runs } from "../db/schema";
+import { env } from "@/env";
 
 export const getAllRuns = cache(
   () =>
@@ -41,5 +42,23 @@ export const submitForm = async (formData: FormData) => {
     createdAt: new Date(),
     isApproved: false,
   });
+
+  if (env.TELEGRAM_BOT_TOKEN && env.TELEGRAM_CHAT_ID) {
+    // Send telegram notification to Matvey
+    await fetch(
+      `https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          chat_id: env.TELEGRAM_CHAT_ID,
+          text: `New run submitted by ${runnerName} with time ${time}`,
+        }),
+      },
+    );
+  }
+
   return redirect("/");
 };
