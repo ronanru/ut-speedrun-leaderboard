@@ -33,11 +33,11 @@ export default async function HomePage() {
           Key!
         </strong>
       </details>
-      <div className="rounded-xl border border-zinc-900">
+      <div className="w-full overflow-x-auto rounded-xl border border-zinc-800">
         <table className="w-full overflow-hidden rounded-xl">
           <thead>
-            <tr className="rounded-xl bg-zinc-900 p-2">
-              <th className="p-2"></th>
+            <tr className="rounded-xl border-b border-zinc-800 bg-zinc-900 p-2 text-left">
+              <th className="p-2">#</th>
               <th className="p-2">Name</th>
               <th className="p-2">Time</th>
               <th className="p-2">Date</th>
@@ -51,7 +51,7 @@ export default async function HomePage() {
               return (
                 <tr
                   key={run.id}
-                  className="border-b border-zinc-900 last:border-none"
+                  className="border-b border-zinc-800 transition-colors last:border-none hover:bg-zinc-900"
                 >
                   <td className="p-2">#{i + 1}</td>
                   <td className="p-2">

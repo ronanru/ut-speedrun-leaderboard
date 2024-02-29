@@ -16,7 +16,7 @@ export const Input = forwardRef<
       <input
         id={id}
         ref={ref}
-        className="block w-full rounded-md border border-zinc-700 bg-zinc-900 px-4 py-2"
+        className="block w-full rounded-md border border-zinc-800 bg-zinc-900 px-4 py-2"
         {...props}
       />
     </div>

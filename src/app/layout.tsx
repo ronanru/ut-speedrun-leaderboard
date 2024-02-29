@@ -1,16 +1,10 @@
 import "@/styles/globals.css";
-import { Inter } from "next/font/google";
 import Link from "next/link";
+import { GeistSans } from "geist/font/sans";
 
 export const runtime = "edge";
 // Prod database is in Stockholm
 export const preferredRegion = "arn1";
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-sans",
-});
-
 export const metadata = {
   title: "UploadThing Speedrunning",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
@@ -24,10 +18,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`mx-auto flex min-h-screen max-w-lg flex-col gap-8 bg-zinc-950 p-8 font-sans text-zinc-50 ${inter.variable}`}
+        className={`mx-auto flex min-h-screen max-w-lg flex-col gap-8 bg-zinc-950 p-8 font-sans text-zinc-50 ${GeistSans.variable}`}
       >
         <main className="flex-1 space-y-8">{children}</main>
-        <footer className="text-center text-sm">
+        <footer className="text-center text-sm text-gray-400">
           <p>
             Made by{" "}
             <Link
