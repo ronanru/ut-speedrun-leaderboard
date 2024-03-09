@@ -1,5 +1,6 @@
 import { getAllRuns } from "@/server/api/runs";
 import Link from "next/link";
+import { Tweet } from "react-tweet";
 
 const dateFormatter = new Intl.DateTimeFormat("en", {
   dateStyle: "medium",
@@ -12,6 +13,10 @@ export default async function HomePage() {
       <h1 className="text-center text-3xl font-bold text-white">
         UploadThing Speedrunning
       </h1>
+      <details className="w-full">
+        <summary className="cursor-pointer">What is this?</summary>
+        <Tweet id="1766010819165499851" />
+      </details>
       <details className="w-full">
         <summary className="cursor-pointer">Speedrun rules</summary>
         <ol className="list-inside list-decimal">
