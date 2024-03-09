@@ -34,27 +34,31 @@ export default async function HomePage() {
         </strong>
       </details>
       <div className="w-full overflow-x-auto rounded-xl border border-zinc-800">
-        <table className="w-full overflow-hidden rounded-xl">
+        <table className="w-full overflow-hidden rounded-xl text-zinc-200">
           <thead>
             <tr className="rounded-xl border-b border-zinc-800 bg-zinc-900 p-2 text-left">
-              <th className="p-2">#</th>
-              <th className="p-2">Name</th>
-              <th className="p-2">Time</th>
-              <th className="p-2">Date</th>
+              <th className="p-2 text-center">#</th>
+              <th className="p-2 text-center">Name</th>
+              <th className="p-2 text-center">Time</th>
+              <th className="p-2 text-center">Date</th>
             </tr>
           </thead>
           <tbody>
             {allRuns.map((run, i) => {
-              const milliseconds = run.timeMillis % 1000;
+              const milliseconds = (run.timeMillis % 1000)
+                .toString()
+                .padStart(3, "0");
               const seconds = Math.floor(run.timeMillis / 1000) % 60;
               const minutes = Math.floor(run.timeMillis / 1000 / 60);
               return (
                 <tr
                   key={run.id}
-                  className="border-b border-zinc-800 transition-colors last:border-none hover:bg-zinc-900"
+                  className="group border-b border-zinc-800 transition-colors first:text-white last:border-none hover:bg-zinc-900"
                 >
-                  <td className="p-2">#{i + 1}</td>
-                  <td className="p-2">
+                  <td className="p-2 text-zinc-400 group-first:py-4 group-first:font-semibold group-first:text-lime-400 group-[:nth-child(2)]:text-yellow-400 group-[:nth-child(3)]:text-orange-400">
+                    #{i + 1}
+                  </td>
+                  <td className="p-2 group-first:py-4 group-first:font-semibold">
                     <Link
                       href={run.runnerUrl}
                       target="_blank"
@@ -63,19 +67,24 @@ export default async function HomePage() {
                       {run.runnerName}
                     </Link>
                   </td>
-                  <td className="p-2">
+                  <td className="p-2 text-right tabular-nums group-first:py-4 group-first:font-semibold">
                     <Link
                       href={run.videoUrl}
                       target="_blank"
                       className="hover:underline"
                     >
-                      {minutes}
-                      <span className="text-sm">m</span> {seconds}
+                      {minutes > 0 && (
+                        <>
+                          {minutes}
+                          <span className="text-sm">m</span>{" "}
+                        </>
+                      )}
+                      {seconds}
                       <span className="text-sm">s</span> {milliseconds}
                       <span className="text-sm">ms</span>
                     </Link>
                   </td>
-                  <td className="p-2">
+                  <td className="p-2 group-first:py-4 group-first:font-semibold">
                     {dateFormatter.format(new Date(run.createdAt))}
                   </td>
                 </tr>
