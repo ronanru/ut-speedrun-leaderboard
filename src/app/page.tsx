@@ -1,6 +1,7 @@
 import { getAllRuns } from "@/server/api/runs";
 import Link from "next/link";
 import { Tweet } from "react-tweet";
+import { Accordion } from "./components/accordion";
 
 const dateFormatter = new Intl.DateTimeFormat("en", {
   dateStyle: "medium",
@@ -13,36 +14,33 @@ export default async function HomePage() {
       <h1 className="text-center text-3xl font-bold text-white">
         UploadThing Speedrunning
       </h1>
-      <details className="w-full">
-        <summary className="cursor-pointer">What is this?</summary>
-        <div data-theme="dark">
-          <Tweet id="1766010819165499851" />
-        </div>
-      </details>
-      <details className="w-full">
-        <summary className="cursor-pointer">Speedrun rules</summary>
-        <ol className="list-inside list-decimal">
-          <li>
-            UT Project creation and project init must be included in the run
-          </li>
-          <li>You can use any framework</li>
-          <li>The run ends when you upload any file</li>
-          <li>You can only copy code from the docs</li>
-        </ol>
-      </details>
-      <details className="w-full">
-        <summary className="cursor-pointer">How to submit a run</summary>Please
-        submit on our{" "}
-        <Link href="/submit" className="underline">
-          submit page
-        </Link>
-        . <br />
-        <strong>
-          Before the submission, please delete the UT Project or reset the API
-          Key!
-        </strong>
-      </details>
-      <div className="w-full overflow-x-auto rounded-xl border border-zinc-800">
+      <section className="space-y-4">
+        <Accordion title="What is this?">
+          <div data-theme="dark" className="-mt-4">
+            <Tweet id="1766010819165499851" />
+          </div>
+        </Accordion>
+        <Accordion title="Speedrun rules">
+          <ol className="list-inside list-decimal">
+            <li>Nothing can be initialized before the run starts</li>
+            <li>You can use any framework</li>
+            <li>The run ends when you upload any file</li>
+            <li>You can only copy code from the docs</li>
+          </ol>
+        </Accordion>
+        <Accordion title="How to submit a run">
+          Please submit on our{" "}
+          <Link href="/submit" className="underline">
+            submit page
+          </Link>
+          . <br />
+          <strong>
+            Before the submission, please delete the UT Project or reset the API
+            Key!
+          </strong>
+        </Accordion>
+      </section>
+      <section className="w-full overflow-x-auto rounded-xl border border-zinc-800">
         <table className="w-full overflow-hidden rounded-xl text-zinc-200">
           <thead>
             <tr className="rounded-xl border-b border-zinc-800 bg-zinc-900 p-2 text-left">
@@ -101,7 +99,7 @@ export default async function HomePage() {
             })}
           </tbody>
         </table>
-      </div>
+      </section>
     </>
   );
 }
