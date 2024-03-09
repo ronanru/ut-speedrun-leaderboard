@@ -8,6 +8,7 @@ export const runs = sqliteTable(
     runnerUrl: text("runner_url", { length: 256 }).notNull(),
     videoUrl: text("video_url", { length: 256 }).notNull(),
     timeMillis: int("time_millis", { mode: "number" }).notNull(),
+    category: text("category", { enum: ["any%", "upload%"] }).notNull(),
     isApproved: int("is_approved", { mode: "boolean" })
       .notNull()
       .default(false),
