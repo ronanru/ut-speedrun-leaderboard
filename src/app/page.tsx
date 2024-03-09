@@ -15,7 +15,9 @@ export default async function HomePage() {
       </h1>
       <details className="w-full">
         <summary className="cursor-pointer">What is this?</summary>
-        <Tweet id="1766010819165499851" />
+        <div data-theme="dark">
+          <Tweet id="1766010819165499851" />
+        </div>
       </details>
       <details className="w-full">
         <summary className="cursor-pointer">Speedrun rules</summary>
