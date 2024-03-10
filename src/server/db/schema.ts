@@ -1,3 +1,4 @@
+import { type InferSelectModel } from "drizzle-orm";
 import { index, int, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 export const runs = sqliteTable(
@@ -8,7 +9,7 @@ export const runs = sqliteTable(
     runnerUrl: text("runner_url", { length: 256 }).notNull(),
     videoUrl: text("video_url", { length: 256 }).notNull(),
     timeMillis: int("time_millis", { mode: "number" }).notNull(),
-    category: text("category", { enum: ["any%", "upload%"] }).notNull(),
+    category: text("category", { enum: ["upload%", "invalid"] }).notNull(),
     isApproved: int("is_approved", { mode: "boolean" })
       .notNull()
       .default(false),
@@ -18,8 +19,11 @@ export const runs = sqliteTable(
   (t) => ({
     timeIdx: index("name_idx").on(t.timeMillis),
     approvedIdx: index("approved_idx").on(t.isApproved),
+    categoryIdx: index("category_idx").on(t.category),
   }),
 );
+
+export type Run = InferSelectModel<typeof runs>;
 
 export const users = sqliteTable("user", {
   id: text("id").notNull().primaryKey(),

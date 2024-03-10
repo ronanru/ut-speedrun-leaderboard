@@ -5,13 +5,14 @@ import { redirect } from "next/navigation";
 import { zfd } from "zod-form-data";
 import { validateRequest } from "../auth";
 import { db } from "../db";
-import { runs } from "../db/schema";
+import { type Run, runs } from "../db/schema";
 import { ratelimit } from "../ratelimit";
 
-export const getAllRuns = cache(
-  () =>
+export const getApprovedRunsByCategory = cache(
+  (selectedCategory: Run["category"]) =>
     db.query.runs.findMany({
-      where: ({ isApproved }, { eq }) => eq(isApproved, true),
+      where: ({ isApproved, category }, { eq, and }) =>
+        and(eq(isApproved, true), eq(category, selectedCategory)),
       orderBy: ({ timeMillis }, { asc }) => asc(timeMillis),
     }),
   ["runs"],
@@ -48,7 +49,7 @@ export const submitForm = async (formData: FormData) => {
     createdAt: new Date(),
     isApproved: false,
     submittedBy: auth.user.id,
-    category: "any%",
+    category: "upload%",
   });
 
   if (env.TELEGRAM_BOT_TOKEN && env.TELEGRAM_CHAT_ID) {

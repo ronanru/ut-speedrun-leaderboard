@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`mx-auto flex min-h-screen max-w-lg flex-col gap-8 bg-zinc-950 p-8 font-sans text-zinc-50 ${GeistSans.variable}`}
+        className={`mx-auto flex min-h-screen max-w-xl flex-col gap-8 bg-zinc-950 p-8 font-sans text-zinc-50 ${GeistSans.variable}`}
       >
         <main className="flex-1 space-y-8">{children}</main>
         <footer className="text-center text-sm text-gray-400">

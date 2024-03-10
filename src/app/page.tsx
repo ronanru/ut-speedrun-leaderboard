@@ -1,14 +1,10 @@
-import { getAllRuns } from "@/server/api/runs";
 import Link from "next/link";
 import { Tweet } from "react-tweet";
 import { Accordion } from "./components/accordion";
+import Leaderboard from "./leaderboard";
+import { Tabs } from "./components/tabs";
 
-const dateFormatter = new Intl.DateTimeFormat("en", {
-  dateStyle: "medium",
-});
-
-export default async function HomePage() {
-  const allRuns = await getAllRuns();
+export default function HomePage() {
   return (
     <>
       <h1 className="text-center text-3xl font-bold text-white">
@@ -21,12 +17,9 @@ export default async function HomePage() {
           </div>
         </Accordion>
         <Accordion title="Speedrun rules">
-          <ol className="list-inside list-decimal">
-            <li>Nothing can be initialized before the run starts</li>
-            <li>You can use any framework</li>
-            <li>The run ends when you upload any file</li>
-            <li>You can only copy code from the docs</li>
-          </ol>
+          <div data-theme="dark" className="-mt-4">
+            <Tweet id="1766778474696679479" />
+          </div>
         </Accordion>
         <Accordion title="How to submit a run">
           Please submit on our{" "}
@@ -40,65 +33,25 @@ export default async function HomePage() {
           </strong>
         </Accordion>
       </section>
-      <section className="w-full overflow-x-auto rounded-xl border border-zinc-800">
-        <table className="w-full overflow-hidden rounded-xl text-zinc-200">
-          <thead>
-            <tr className="rounded-xl border-b border-zinc-800 bg-zinc-900 p-2 text-left">
-              <th className="p-2 text-center">#</th>
-              <th className="p-2 text-center">Name</th>
-              <th className="p-2 text-center">Time</th>
-              <th className="p-2 text-center">Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {allRuns.map((run, i) => {
-              const milliseconds = (run.timeMillis % 1000)
-                .toString()
-                .padStart(3, "0");
-              const seconds = Math.floor(run.timeMillis / 1000) % 60;
-              const minutes = Math.floor(run.timeMillis / 1000 / 60);
-              return (
-                <tr
-                  key={run.id}
-                  className="group border-b border-zinc-800 transition-colors first:text-white last:border-none hover:bg-zinc-900"
-                >
-                  <td className="p-2 text-zinc-400 group-first:py-4 group-first:font-semibold group-first:text-lime-400 group-[:nth-child(2)]:text-yellow-400 group-[:nth-child(3)]:text-orange-400">
-                    #{i + 1}
-                  </td>
-                  <td className="p-2 group-first:py-4 group-first:font-semibold">
-                    <Link
-                      href={run.runnerUrl}
-                      target="_blank"
-                      className="hover:underline"
-                    >
-                      {run.runnerName}
-                    </Link>
-                  </td>
-                  <td className="p-2 text-right tabular-nums group-first:py-4 group-first:font-semibold">
-                    <Link
-                      href={run.videoUrl}
-                      target="_blank"
-                      className="hover:underline"
-                    >
-                      {minutes > 0 && (
-                        <>
-                          {minutes}
-                          <span className="text-sm">m</span>{" "}
-                        </>
-                      )}
-                      {seconds}
-                      <span className="text-sm">s</span> {milliseconds}
-                      <span className="text-sm">ms</span>
-                    </Link>
-                  </td>
-                  <td className="p-2 group-first:py-4 group-first:font-semibold">
-                    {dateFormatter.format(new Date(run.createdAt))}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+      <section className="space-y-4">
+        <h2 className="text-center text-lg font-medium">
+          Leaderboards by speedrun category
+        </h2>
+        <Tabs
+          label="Speedrun categories"
+          tabs={[
+            {
+              value: "upload%",
+              label: "Upload% official",
+              content: <Leaderboard category="upload%" />,
+            },
+            {
+              value: "invalid",
+              label: "Invalidated after rules update",
+              content: <Leaderboard category="invalid" />,
+            },
+          ]}
+        />
       </section>
     </>
   );
