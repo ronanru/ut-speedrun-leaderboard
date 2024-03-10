@@ -1,11 +1,12 @@
 "use server";
-import { unstable_cache as cache } from "next/cache";
-import { db } from "../db";
-import { zfd } from "zod-form-data";
-import { redirect } from "next/navigation";
-import { runs } from "../db/schema";
 import { env } from "@/env";
+import { unstable_cache as cache } from "next/cache";
+import { redirect } from "next/navigation";
+import { zfd } from "zod-form-data";
 import { validateRequest } from "../auth";
+import { db } from "../db";
+import { runs } from "../db/schema";
+import { ratelimit } from "../ratelimit";
 
 export const getAllRuns = cache(
   () =>
@@ -31,6 +32,8 @@ export const submitForm = async (formData: FormData) => {
   if (!auth.user) throw new Error("Unauthorized");
   const { runnerName, videoUrl, runnerUrl, time } =
     submitFormSchema.parse(formData);
+  const limit = await ratelimit?.limit(auth.user.id);
+  if (limit && !limit.success) throw new Error("Rate limited");
   const timeMillis = time.split(" ").reduce((acc, time) => {
     const [value, unit] = time.match(/\d+|\D+/g) as [string, "m" | "s" | "ms"];
     return (
@@ -45,6 +48,7 @@ export const submitForm = async (formData: FormData) => {
     createdAt: new Date(),
     isApproved: false,
     submittedBy: auth.user.id,
+    category: "any%",
   });
 
   if (env.TELEGRAM_BOT_TOKEN && env.TELEGRAM_CHAT_ID) {

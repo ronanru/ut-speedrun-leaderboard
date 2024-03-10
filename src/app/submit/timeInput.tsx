@@ -1,6 +1,6 @@
 "use client";
-import { Input } from "../components/input";
 import { useMask } from "@react-input/mask";
+import { Input } from "../components/input";
 
 export const TimeInput = () => {
   const inputRef = useMask({

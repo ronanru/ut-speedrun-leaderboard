@@ -1,8 +1,8 @@
+import { submitForm } from "@/server/api/runs";
 import { validateRequest } from "@/server/auth";
 import Link from "next/link";
 import { Input } from "../components/input";
 import { TimeInput } from "./timeInput";
-import { submitForm } from "@/server/api/runs";
 
 export default async function SubmitPage() {
   const auth = await validateRequest();
@@ -35,7 +35,7 @@ export default async function SubmitPage() {
       />
       <Input
         required
-        label="Link to your run (Please upload to YouTube)"
+        label="Link to your run (Please upload to YouTube or Twitter)"
         name="videoUrl"
         type="url"
       />

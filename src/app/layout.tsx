@@ -1,6 +1,6 @@
 import "@/styles/globals.css";
-import Link from "next/link";
 import { GeistSans } from "geist/font/sans";
+import Link from "next/link";
 
 export const runtime = "edge";
 // Prod database is in Stockholm

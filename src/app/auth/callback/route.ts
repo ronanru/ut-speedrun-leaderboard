@@ -1,12 +1,13 @@
 import { github, lucia } from "@/server/auth";
-import { cookies } from "next/headers";
-import { OAuth2RequestError } from "arctic";
-import { generateId } from "lucia";
 import { db } from "@/server/db";
-import { z } from "zod";
-import { eq } from "drizzle-orm";
 import { users } from "@/server/db/schema";
+import { ratelimit } from "@/server/ratelimit";
+import { OAuth2RequestError } from "arctic";
+import { eq } from "drizzle-orm";
+import { generateId } from "lucia";
+import { cookies } from "next/headers";
 import { type NextRequest } from "next/server";
+import { z } from "zod";
 
 const githubUserSchema = z.object({
   id: z.number(),
@@ -14,6 +15,11 @@ const githubUserSchema = z.object({
 });
 
 export async function GET(request: NextRequest): Promise<Response> {
+  const limit = await ratelimit?.limit(request.ip ?? "anonymous");
+  if (limit && !limit.success)
+    return new Response("Too many requests", {
+      status: 429,
+    });
   const code = request.nextUrl.searchParams.get("code");
   const state = request.nextUrl.searchParams.get("state");
   const storedState = cookies().get("github_oauth_state")?.value ?? null;
