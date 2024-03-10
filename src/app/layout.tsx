@@ -1,5 +1,6 @@
 import "@/styles/globals.css";
 import { GeistSans } from "geist/font/sans";
+import { Analytics } from "@vercel/analytics/react";
 import Link from "next/link";
 
 export const runtime = "edge";
@@ -40,6 +41,7 @@ export default function RootLayout({
             Open source on GitHub
           </Link>
         </footer>
+        <Analytics />
       </body>
     </html>
   );
